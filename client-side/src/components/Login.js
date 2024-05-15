@@ -28,10 +28,10 @@ const Login = () => {
             }
 
             result = await result.json();
-
+            console.log(result)
             if (result.auth) {
                 localStorage.setItem('user', JSON.stringify(result.user));
-                localStorage.setItem('token', JSON.stringify(result.auth));
+                //localStorage.setItem('token', JSON.stringify(result.auth));
                 navigate('/');
             } else {
                 alert("Please enter correct details");

@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 require('./db/config');
 const User = require('./db/User');
 const Product = require('./db/product');
@@ -13,7 +14,7 @@ app.use(express.json());
 
 app.use(cors({
   
-    origin: "*",
+    origin: process.env.FRONTED_URL,
     methods:["GET" ,"POST" , "PUT" , "DELETE"],
     credentials: true,
     optionSuccessStatus:200
@@ -32,18 +33,23 @@ app.post('/register', async (req, res) => {
     })
 });
 app.post('/login', async (req, res) => {
+    console.log(req.body.password,req.body.email)
     if (req.body.password && req.body.email) {
         let user = await User.findOne(req.body).select("-password");
+        console.log(user)
+        let t;
         if (user) {
-            Jwt.sign({ user }, jwtkey, { expiresIn: "2h" }, (err, token) => {
+            /*Jwt.sign({ user }, jwtkey, { expiresIn: "2h" }, (err, token) => {
                 if (err) {
                     res.send({ result: "Some went wrong " });
                 }
+                t=token
                 res.send({ user, auth: token });
-            })
-            res.send(user);
+            })*/
+            res.send({ user, auth:true });
         } else {
             res.send({ result: 'No User Found' });
+
         }
     } else {
         res.send({ result: 'No User Found' });
