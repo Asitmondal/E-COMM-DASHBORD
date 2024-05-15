@@ -8,14 +8,15 @@ const AddProduct = () => {
     const [company, setCompany] = React.useState('');
     const [error, setError] = React.useState(false);
     const navigate = useNavigate();
-
+    const url=process.env.REACT_APP_bUrl;
+    console.log(url);
     const addProduct = async () => {
         if (!name || !price || !category || !company) {
             setError(true);
             return false;
         }
         const userId = JSON.parse(localStorage.getItem('user'))._id;
-        let result = await fetch('http://localhost:5000/add-product', {
+        let result = await fetch(`${url}/add-product`, {
             method: 'post',
             body: JSON.stringify({ name, price, category, company, userId }),
             headers: {
