@@ -11,7 +11,14 @@ const jwtkey = 'e-comm';
 
 app.set('view engine', 'ejs');
 app.use(express.json());
-
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 app.use(cors({
   
     origin: process.env.FRONTED_URL,
