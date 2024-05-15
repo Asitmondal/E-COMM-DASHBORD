@@ -5,11 +5,26 @@ const User = require('./db/User');
 const Product = require('./db/product');
 const app = express();
 const Jwt = require('jsonwebtoken');
+//const mongoose  = require('mongoose');
 const jwtkey = 'e-comm';
 
 app.set('view engine', 'ejs');
 app.use(express.json());
-app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+app.use(cors({
+  
+    origin: "*",
+    methods:["GET" ,"POST" , "PUT" , "DELETE"],
+    credentials: true,
+    optionSuccessStatus:200
+  }))
 
 app.post('/register', async (req, res) => {
     let user = new User(req.body);
@@ -47,6 +62,9 @@ app.post("/add-product", async (req, res) => {
     let result = await product.save();
     res.send(result);
 });
+app.get("/",async(req,res)=>{
+    res.send("<h1>MD FIROJ AHMED</h1>")
+})
 
 app.get("/products", async (req, res) => {
     let products = await Product.find();
@@ -90,5 +108,13 @@ app.get('/search/:key', async (req, res) => {
     });
     res.send(result);
 });
-
+/*const mongoUrl = "mongodb+srv://firojAhmed:firoj@exploresphere.tv5f9g9.mongodb.net/?retryWrites=true&w=majority";
+mongoose.connect(mongoUrl, {
+    dbName: "Ecomm"
+}).then(() => {
+    console.log("Database Connected");
+}).catch((error) => {
+    console.log(mongoUrl);
+    console.error("Error connecting to database:", error);
+});*/
 app.listen(5000);
