@@ -32,19 +32,19 @@ app.post('/register', async (req, res) => {
     let result = await user.save();
     result = result.toObject();
     delete result.password;
-    Jwt.sign({ result }, jwtkey, { expiresIn: "2h" }, (err, token) => {
-        if (err) {
-            res.send({ result: "Some went wrong " });
-        }
-        res.send({result, auth: token });
-    })
+    // Jwt.sign({ result }, jwtkey, { expiresIn: "2h" }, (err, token) => {
+    //     if (err) {
+    //         res.send({ result: "Some went wrong " });
+    //     }
+    //     res.send({result, auth: token });
+    // })
+    res.send(result)
 });
 app.post('/login', async (req, res) => {
     console.log(req.body.password,req.body.email)
     if (req.body.password && req.body.email) {
         let user = await User.findOne(req.body).select("-password");
         console.log(user)
-        let t;
         if (user) {
             /*Jwt.sign({ user }, jwtkey, { expiresIn: "2h" }, (err, token) => {
                 if (err) {
